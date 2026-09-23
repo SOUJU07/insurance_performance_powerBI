@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "InsurancePerformance"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "4322986b-89b9-459f-9426-f85039738a5e"
+  }
+}
