@@ -1,0 +1,26 @@
+```gitignore
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor files
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.log
+
+# Power BI local/cache files
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
+
+# Python temporary files
+__pycache__/
+*.pyc
+
+# Environment files
+.env
