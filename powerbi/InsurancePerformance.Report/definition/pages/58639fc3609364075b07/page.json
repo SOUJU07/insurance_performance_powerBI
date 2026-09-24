@@ -4,5 +4,6 @@
   "displayName": "DEV - Measure Validation",
   "displayOption": "FitToPage",
   "height": 1080,
-  "width": 1920
+  "width": 1920,
+  "visibility": "HiddenInViewMode"
 }
