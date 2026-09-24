@@ -4,10 +4,10 @@
   "position": {
     "x": 1060.4297287777385,
     "y": 541.0355759070095,
-    "z": 9,
+    "z": 9000,
     "height": 538.87143360338143,
     "width": 835.35892920042261,
-    "tabOrder": 9
+    "tabOrder": 9000
   },
   "visual": {
     "visualType": "clusteredBarChart",
@@ -174,20 +174,6 @@
             }
           ]
         }
-      },
-      {
-        "name": "e3deedb0910d572804ea",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "_Measures"
-              }
-            },
-            "Property": "Total APE"
-          }
-        },
-        "type": "Advanced"
       }
     ]
   }

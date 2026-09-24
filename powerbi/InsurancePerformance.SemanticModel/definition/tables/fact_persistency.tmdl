@@ -76,6 +76,24 @@ table fact_persistency
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	column 'Issue Year' =
+			
+			QUOTIENT(fact_persistency[issue_date_key], 10000)
+		formatString: 0
+		lineageTag: f45cf85e-adbc-4ad8-8ac3-f74848ae1ff9
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Renewal Year' =
+			
+			QUOTIENT(fact_persistency[renewal_due_date_key], 10000)
+		formatString: 0
+		lineageTag: ef6a4c64-b771-4757-bda7-96a0289373e5
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
 	partition fact_persistency = m
 		mode: import
 		source =

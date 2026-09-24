@@ -39,6 +39,9 @@
       }
     ]
   },
+  "publicCustomVisuals": [
+    "deneb7E15AEF80B9E4D4F8E12924291ECE89A"
+  ],
   "resourcePackages": [
     {
       "name": "SharedResources",
@@ -48,6 +51,17 @@
           "name": "Fluent2-CY26SU08",
           "path": "BaseThemes/Fluent2-CY26SU08.json",
           "type": "BaseTheme"
+        }
+      ]
+    },
+    {
+      "name": "STANDALONEhtmlContent443BE3AD55E043BF878BED274D3A6855",
+      "type": "CustomVisual",
+      "items": [
+        {
+          "name": "STANDALONEhtmlContent443BE3AD55E043BF878BED274D3A6855.pbiviz.json",
+          "path": "STANDALONEhtmlContent443BE3AD55E043BF878BED274D3A6855.pbiviz.json",
+          "type": "CustomVisualMetadata"
         }
       ]
     }

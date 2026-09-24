@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
-  "name": "e08e5b802ac7660cd105",
+  "name": "ce844ea088d7167003ca",
   "position": {
-    "x": 1156.3733472967665,
-    "y": 228.01727974865821,
-    "z": 3000,
-    "height": 280,
-    "width": 280,
-    "tabOrder": 3000
+    "x": 710,
+    "y": 160,
+    "z": 1003,
+    "height": 160,
+    "width": 328.33333333333337,
+    "tabOrder": 1003
   },
   "visual": {
     "visualType": "cardVisual",
@@ -23,11 +23,11 @@
                       "Entity": "_Measures"
                     }
                   },
-                  "Property": "Persistency Rate"
+                  "Property": "Due Policy Count"
                 }
               },
-              "queryRef": "_Measures.Persistency Rate",
-              "nativeQueryRef": "Persistency Rate"
+              "queryRef": "_Measures.Due Policy Count",
+              "nativeQueryRef": "Due Policy Count"
             }
           ]
         }
@@ -42,7 +42,7 @@
                     "Entity": "_Measures"
                   }
                 },
-                "Property": "Persistency Rate"
+                "Property": "Due Policy Count"
               }
             },
             "direction": "Descending"

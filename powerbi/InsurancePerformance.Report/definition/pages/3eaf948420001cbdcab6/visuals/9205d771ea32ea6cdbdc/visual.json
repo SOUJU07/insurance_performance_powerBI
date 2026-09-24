@@ -1,16 +1,16 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
-  "name": "fadecc1aa6151e0b9a70",
+  "name": "9205d771ea32ea6cdbdc",
   "position": {
-    "x": 39.812540908495876,
-    "y": 21.715931404634116,
-    "z": 4000,
-    "height": 171.91779028668674,
-    "width": 504.89540515774314,
-    "tabOrder": 6000
+    "x": 430.66431842197954,
+    "y": 214.25008805917577,
+    "z": 3000,
+    "height": 106.04297287777386,
+    "width": 320.29306093694964,
+    "tabOrder": 3000
   },
   "visual": {
-    "visualType": "listSlicer",
+    "visualType": "slicer",
     "query": {
       "queryState": {
         "Values": {
@@ -23,35 +23,51 @@
                       "Entity": "dim_date"
                     }
                   },
-                  "Property": "year"
+                  "Property": "month"
                 }
               },
-              "queryRef": "dim_date.year",
-              "nativeQueryRef": "year",
+              "queryRef": "dim_date.month",
+              "nativeQueryRef": "Sum of month",
               "active": true
             }
           ]
         }
-      },
-      "sortDefinition": {
-        "sort": [
-          {
-            "field": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "dim_date"
-                  }
-                },
-                "Property": "year"
-              }
-            },
-            "direction": "Ascending"
-          }
-        ]
       }
     },
     "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dropdown'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "selection": [
+        {
+          "properties": {
+            "selectAllCheckboxEnabled": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "singleSelect": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
       "general": [
         {
           "properties": {
@@ -77,7 +93,7 @@
                                   "Source": "d"
                                 }
                               },
-                              "Property": "year"
+                              "Property": "month"
                             }
                           }
                         ],
@@ -85,7 +101,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "2023L"
+                                "Value": "3L"
                               }
                             }
                           ]

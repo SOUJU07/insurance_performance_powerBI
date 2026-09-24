@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
-  "name": "6ca118df63b0053c9757",
+  "name": "9a4de2da94c995b12ad5",
   "position": {
-    "x": 491.26030292356461,
-    "y": 138.50510743219442,
-    "z": 2000,
-    "height": 95.222261359633677,
-    "width": 629.76541035575906,
-    "tabOrder": 2000
+    "x": 785.58365621697783,
+    "y": 214.25008805917577,
+    "z": 4000,
+    "height": 149.32581895033462,
+    "width": 357.08348009862624,
+    "tabOrder": 4000
   },
   "visual": {
     "visualType": "slicer",
@@ -23,15 +23,32 @@
                       "Entity": "dim_agent"
                     }
                   },
-                  "Property": "channel"
+                  "Property": "region"
                 }
               },
-              "queryRef": "dim_agent.channel",
-              "nativeQueryRef": "channel",
+              "queryRef": "dim_agent.region",
+              "nativeQueryRef": "region",
               "active": true
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "dim_agent"
+                  }
+                },
+                "Property": "region"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
       }
     },
     "objects": {
@@ -44,36 +61,24 @@
                   "Value": "'Dropdown'"
                 }
               }
-            },
-            "isInvertedSelectionMode": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
             }
           }
-        }
-      ],
-      "general": [
-        {
-          "properties": {}
         }
       ],
       "selection": [
         {
           "properties": {
-            "singleSelect": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
-                }
-              }
-            },
             "selectAllCheckboxEnabled": {
               "expr": {
                 "Literal": {
                   "Value": "true"
+                }
+              }
+            },
+            "singleSelect": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             }

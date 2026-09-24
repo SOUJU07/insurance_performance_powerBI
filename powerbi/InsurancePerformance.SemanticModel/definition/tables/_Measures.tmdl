@@ -194,6 +194,174 @@ table _Measures
 		formatString: 0
 		lineageTag: f6286e2a-f929-42ed-a52c-4d991a7f07ec
 
+	measure 'Agent Target Status' =
+			
+			SWITCH(
+			    TRUE(),
+			    [APE vs Target %] >= 1, "Above Target",
+			    [APE vs Target %] >= 0.9, "On Track",
+			    "Below Target"
+			)
+		lineageTag: 353257ea-f86f-418d-9403-2b84f256f79f
+
+	measure 'Top Product by APE' =
+			
+			VAR TopProduct =
+			    TOPN(
+			        1,
+			        ADDCOLUMNS(
+			            VALUES(dim_product[product_name]),
+			            "_APE", [Total APE]
+			        ),
+			        [_APE], DESC,
+			        dim_product[product_name], ASC
+			    )
+			RETURN
+			    CONCATENATEX(
+			        TopProduct,
+			        dim_product[product_name],
+			        ""
+			    )
+		lineageTag: 9204af16-a7b4-49c8-a4f5-bbff6d1033a3
+
+	measure 'Agent Profile HTML' =
+			
+			VAR AgentName =
+			    SELECTEDVALUE(dim_agent[agent_name], "Select an Agent")
+			
+			VAR Territory =
+			    SELECTEDVALUE(dim_agent[territory], "-")
+			
+			VAR YTDAPE =
+			    [APE YTD]
+			
+			VAR AgentRank =
+			    [Agent Rank by APE]
+			
+			VAR MoM =
+			    [APE MoM Growth %]
+			
+			VAR TopProduct =
+			    [Top Product by APE]
+			
+			VAR Persistency =
+			    [Persistency Rate]
+			
+			VAR Arrow =
+			    SWITCH(
+			        TRUE(),
+			        ISBLANK(MoM), "—",
+			        MoM > 0, "▲",
+			        MoM < 0, "▼",
+			        "→"
+			    )
+			
+			VAR TrendColor =
+			    SWITCH(
+			        TRUE(),
+			        ISBLANK(MoM), "#6B7280",
+			        MoM > 0, "#15803D",
+			        MoM < 0, "#B91C1C",
+			        "#6B7280"
+			    )
+			
+			RETURN
+			"
+			<div style='font-family:Segoe UI,Arial;
+			background:#ffffff;
+			border:1px solid #e5e7eb;
+			border-radius:14px;
+			padding:28px;'>
+			
+			<div style='font-size:13px;color:#6b7280;'>AGENT PROFILE</div>
+			
+			<div style='font-size:28px;font-weight:700;margin-top:4px;'>
+			" & AgentName & "
+			</div>
+			
+			<div style='font-size:15px;color:#6b7280;margin-bottom:25px;'>
+			Territory: " & Territory & "
+			</div>
+			
+			<div style='display:flex;gap:15px;'>
+			
+			<div style='flex:1;background:#f8fafc;padding:18px;border-radius:10px;'>
+			<div style='font-size:12px;color:#6b7280;'>YTD APE</div>
+			<div style='font-size:24px;font-weight:700;'>
+			" & FORMAT(YTDAPE,"$#,##0") & "
+			</div>
+			</div>
+			
+			<div style='flex:1;background:#f8fafc;padding:18px;border-radius:10px;'>
+			<div style='font-size:12px;color:#6b7280;'>AGENT RANK</div>
+			<div style='font-size:24px;font-weight:700;'>
+			#" & FORMAT(AgentRank,"0") & "
+			</div>
+			</div>
+			
+			<div style='flex:1;background:#f8fafc;padding:18px;border-radius:10px;'>
+			<div style='font-size:12px;color:#6b7280;'>MOM TREND</div>
+			<div style='font-size:24px;font-weight:700;color:" & TrendColor & ";'>
+			" & Arrow & " " & FORMAT(MoM,"0.0%") & "
+			</div>
+			</div>
+			
+			</div>
+			
+			<div style='display:flex;gap:15px;margin-top:15px;'>
+			
+			<div style='flex:1;background:#f8fafc;padding:18px;border-radius:10px;'>
+			<div style='font-size:12px;color:#6b7280;'>TOP PRODUCT BY APE</div>
+			<div style='font-size:20px;font-weight:600;margin-top:5px;'>
+			" & TopProduct & "
+			</div>
+			</div>
+			
+			<div style='flex:1;background:#f8fafc;padding:18px;border-radius:10px;'>
+			<div style='font-size:12px;color:#6b7280;'>PERSISTENCY RATE</div>
+			<div style='font-size:24px;font-weight:700;margin-top:5px;'>
+			" & FORMAT(Persistency,"0.0%") & "
+			</div>
+			</div>
+			
+			</div>
+			
+			</div>
+			"
+		lineageTag: 3ec6bf61-10b0-4cb6-bacf-e1ec3fb588ea
+
+	measure 'Active Policy Count' =
+			
+			VAR SnapshotDateKey =
+			    MAX(dim_date[date_key])
+			
+			RETURN
+			CALCULATE(
+			    DISTINCTCOUNT(fact_persistency[policy_id]),
+			
+			    REMOVEFILTERS(dim_date),
+			
+			    FILTER(
+			        ALL(
+			            fact_persistency[issue_date_key],
+			            fact_persistency[renewal_due_date_key],
+			            fact_persistency[renewal_status]
+			        ),
+			        fact_persistency[issue_date_key] <= SnapshotDateKey
+			            &&
+			        (
+			            fact_persistency[renewal_due_date_key] > SnapshotDateKey
+			            ||
+			            fact_persistency[renewal_status] IN {
+			                "renewed",
+			                "grace"
+			            }
+			        )
+			    )
+			)
+		formatString: 0
+		lineageTag: ddec04e6-9789-4b56-a631-9916a0ffde6e
+
 	column Placeholder
 		isHidden
 		formatString: 0
