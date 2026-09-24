@@ -1,0 +1,29 @@
+table Territory_Access
+	lineageTag: 5bb4cfc0-53d8-4801-859e-c1252d299eaa
+
+	column ManagerUPN
+		dataType: string
+		lineageTag: 085ccc93-dbef-4c1f-806b-5dd2acc53db7
+		summarizeBy: none
+		sourceColumn: ManagerUPN
+
+		annotation SummarizationSetBy = Automatic
+
+	column Territory
+		dataType: string
+		lineageTag: 644db6c6-ba38-4240-be9f-b0555a962be3
+		summarizeBy: none
+		sourceColumn: Territory
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Territory_Access = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45Wyk3MS0xPLdLLM3RISc3N10vOz1XSUQrR9TNUitVBSBejSQcDpWMB", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [ManagerUPN = _t, Territory = _t])
+				in
+				    Source
+
+	annotation PBI_ResultType = Table
+

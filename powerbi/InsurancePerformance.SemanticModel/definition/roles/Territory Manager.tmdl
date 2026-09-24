@@ -1,0 +1,19 @@
+role 'Territory Manager'
+	modelPermission: read
+
+	tablePermission dim_agent =
+			VAR CurrentUser =
+			    USERPRINCIPALNAME()
+			
+			RETURN
+			    CONTAINS(
+			        FILTER(
+			            Territory_Access,
+			            Territory_Access[ManagerUPN] = CurrentUser
+			        ),
+			        Territory_Access[Territory],
+			        dim_agent[territory]
+			    )
+
+	annotation PBI_Id = 408879a3f87c4c19889e8e467dd9cc34
+

@@ -11,7 +11,7 @@ annotation __PBI_TimeIntelligenceEnabled = 1
 
 annotation PBI_ProTooling = ["DevMode"]
 
-annotation PBI_QueryOrder = ["dim_date","dim_agent","dim_product","fact_sales","dq_sales_invalid_date","dq_sales_invalid_product","distinct orphan agent IDs","inferred_agents","fact_target","fact_persistency"]
+annotation PBI_QueryOrder = ["dim_date","dim_agent","dim_product","fact_sales","dq_sales_invalid_date","dq_sales_invalid_product","distinct orphan agent IDs","inferred_agents","fact_target","fact_persistency","Territory_Access"]
 
 ref table dim_date
 ref table DateTableTemplate_ed3174e0-af60-40c1-9f01-236a135ceeff
@@ -22,6 +22,9 @@ ref table fact_sales
 ref table fact_target
 ref table fact_persistency
 ref table _Measures
+ref table Territory_Access
+
+ref role 'Territory Manager'
 
 ref cultureInfo en-US
 
