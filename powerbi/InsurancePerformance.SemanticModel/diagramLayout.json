@@ -5,11 +5,103 @@
       "ordinal": 0,
       "scrollPosition": {
         "x": 0,
-        "y": 0
+        "y": 57.599998474121094
       },
-      "nodes": [],
+      "nodes": [
+        {
+          "location": {
+            "x": 807.5,
+            "y": 0
+          },
+          "nodeIndex": "dim_date",
+          "nodeLineageTag": "c681a127-5757-4dbe-b04d-68f8a496581d",
+          "size": {
+            "height": 226,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 119,
+            "y": 581.25
+          },
+          "nodeIndex": "dim_agent",
+          "nodeLineageTag": "a682acde-3ee3-4c5c-a2bc-1189888be119",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 1182.5,
+            "y": 624.84423797335864
+          },
+          "nodeIndex": "dim_product",
+          "nodeLineageTag": "f3d15d2e-8784-4f82-adab-7f573ac54e87",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 654.98010942346355,
+            "y": 343.0000114440918
+          },
+          "nodeIndex": "fact_sales",
+          "nodeLineageTag": "eb84cf37-9543-46e0-a007-c9997272a690",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 646.93847594671729,
+            "y": 965.92211898667938
+          },
+          "nodeIndex": "fact_persistency",
+          "nodeLineageTag": "f74e126f-4a9a-4d62-a77b-7e3f89076da3",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 659.93847213202,
+            "y": 679.92211898667938
+          },
+          "nodeIndex": "fact_target",
+          "nodeLineageTag": "4dde10c0-bee8-4f2b-a490-13d46b08a742",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 1653.5,
+            "y": 566.96105949333969
+          },
+          "nodeIndex": "_Measures",
+          "nodeLineageTag": "d060de13-30de-4e60-9fdd-e1c980598a3f",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
       "name": "All tables",
-      "zoomValue": 100,
+      "zoomValue": 50,
       "pinKeyFieldsToTop": false,
       "showExtraHeaderInfo": false,
       "hideKeyFieldsWhenCollapsed": false,

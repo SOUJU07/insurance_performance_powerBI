@@ -1,0 +1,98 @@
+table fact_persistency
+	lineageTag: f74e126f-4a9a-4d62-a77b-7e3f89076da3
+
+	column policy_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 1da6487e-f61a-4f31-8e0d-e07c59af0de0
+		summarizeBy: sum
+		sourceColumn: policy_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column agent_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 7c0f28fa-d286-4236-81be-aa35caca50b8
+		summarizeBy: none
+		sourceColumn: agent_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 779bfe5e-29c8-4b5d-a772-6b343163b424
+		summarizeBy: none
+		sourceColumn: product_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column issue_date_key
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 6ad678cf-d145-42b4-b622-db724af3dc65
+		summarizeBy: sum
+		sourceColumn: issue_date_key
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column renewal_due_date_key
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 7a6042f0-9cee-4d92-bc4d-d7f18d54b27a
+		summarizeBy: none
+		sourceColumn: renewal_due_date_key
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column renewal_status
+		dataType: string
+		lineageTag: 928a62ba-d0b6-4e61-96c3-7f4df17b86fd
+		summarizeBy: none
+		sourceColumn: renewal_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column premium_usd
+		dataType: double
+		lineageTag: eca2b91c-b5dc-4795-b2df-31993a5b664e
+		summarizeBy: sum
+		sourceColumn: premium_usd
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition fact_persistency = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\TUKU MAPA\Documents\Project\insurance_performance_powerBI\data\fact_persistency.csv"),[Delimiter=",", Columns=7, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"policy_id", Int64.Type}, {"agent_id", Int64.Type}, {"product_id", Int64.Type}, {"issue_date_key", Int64.Type}, {"renewal_due_date_key", Int64.Type}, {"renewal_status", type text}, {"premium_usd", type number}}),
+				    #"Trimmed Text" = Table.TransformColumns(#"Changed Type",{{"renewal_status", Text.Trim, type text}}),
+				    #"Lowercased Text" = Table.TransformColumns(#"Trimmed Text",{{"renewal_status", Text.Lower, type text}}),
+				    #"Added Custom" = Table.AddColumn(#"Lowercased Text", "date_check", each if [renewal_due_date_key] >= [issue_date_key]
+				then "OK"
+				else "Invalid"),
+				    #"Removed Columns" = Table.RemoveColumns(#"Added Custom",{"date_check"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

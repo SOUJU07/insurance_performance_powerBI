@@ -1,0 +1,69 @@
+expression inferred_agents =
+		let
+		    Source = #table(
+		        type table [
+		            agent_id = Int64.Type,
+		            agent_code = text,
+		            agent_name = text,
+		            region = text,
+		            territory = text,
+		            office = text,
+		            join_date = nullable date,
+		            channel = text,
+		            active_flag = Int64.Type
+		        ],
+		        {
+		            {9001, "UNMAPPED-9001", "Unmapped Agent 9001", "Unknown", "Unknown", "Unknown", null, "Unknown", 0},
+		            {9002, "UNMAPPED-9002", "Unmapped Agent 9002", "Unknown", "Unknown", "Unknown", null, "Unknown", 0},
+		            {9003, "UNMAPPED-9003", "Unmapped Agent 9003", "Unknown", "Unknown", "Unknown", null, "Unknown", 0},
+		            {9004, "UNMAPPED-9004", "Unmapped Agent 9004", "Unknown", "Unknown", "Unknown", null, "Unknown", 0},
+		            {9005, "UNMAPPED-9005", "Unmapped Agent 9005", "Unknown", "Unknown", "Unknown", null, "Unknown", 0},
+		            {9006, "UNMAPPED-9006", "Unmapped Agent 9006", "Unknown", "Unknown", "Unknown", null, "Unknown", 0},
+		            {9007, "UNMAPPED-9007", "Unmapped Agent 9007", "Unknown", "Unknown", "Unknown", null, "Unknown", 0},
+		            {9008, "UNMAPPED-9008", "Unmapped Agent 9008", "Unknown", "Unknown", "Unknown", null, "Unknown", 0},
+		            {9009, "UNMAPPED-9009", "Unmapped Agent 9009", "Unknown", "Unknown", "Unknown", null, "Unknown", 0},
+		            {9010, "UNMAPPED-9010", "Unmapped Agent 9010", "Unknown", "Unknown", "Unknown", null, "Unknown", 0},
+		            {9011, "UNMAPPED-9011", "Unmapped Agent 9011", "Unknown", "Unknown", "Unknown", null, "Unknown", 0}
+		        }
+		    )
+		in
+		    Source
+	lineageTag: 6200ee72-91d8-4ad2-9acf-5bd670c14954
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression dq_sales_invalid_date =
+		let
+		    Source = Table.NestedJoin(fact_sales, {"date_key"}, dim_date, {"date_key"}, "dim_date", JoinKind.LeftAnti)
+		in
+		    Source
+	lineageTag: 288bcf43-0646-43fe-b9b9-22947e6b6313
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression dq_sales_invalid_product =
+		let
+		    Source = Table.NestedJoin(fact_sales, {"product_id"}, dim_product, {"product_id"}, "dim_product", JoinKind.LeftAnti)
+		in
+		    Source
+	lineageTag: 7c4d0250-80df-40bf-95e4-e13c247ca76b
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
+expression 'distinct orphan agent IDs' =
+		let
+		    Source = Table.NestedJoin(fact_sales, {"agent_id"}, dim_agent, {"agent_id"}, "dim_agent", JoinKind.LeftAnti)
+		in
+		    Source
+	lineageTag: 0d7614db-dc75-4bb2-aedc-82e37d803e0f
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

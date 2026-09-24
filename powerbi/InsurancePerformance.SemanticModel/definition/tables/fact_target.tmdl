@@ -1,0 +1,71 @@
+table fact_target
+	lineageTag: 4dde10c0-bee8-4f2b-a490-13d46b08a742
+
+	column agent_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 6a54b749-124c-482a-9861-e0c4b5f274b4
+		summarizeBy: none
+		sourceColumn: agent_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column year
+		dataType: int64
+		formatString: 0
+		lineageTag: 369c21ee-4ea5-404e-bfaa-144d6d56748e
+		summarizeBy: sum
+		sourceColumn: year
+
+		annotation SummarizationSetBy = Automatic
+
+	column month
+		dataType: int64
+		formatString: 0
+		lineageTag: 5db77c34-5d57-44e6-8c34-313189a5a1fb
+		summarizeBy: sum
+		sourceColumn: month
+
+		annotation SummarizationSetBy = Automatic
+
+	column ape_target_usd
+		dataType: double
+		lineageTag: 17dcfd0f-0b0b-4815-9305-83f7a4b92bb4
+		summarizeBy: sum
+		sourceColumn: ape_target_usd
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column target_date_key
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 141cd494-e720-468d-81d7-475a0cf79530
+		summarizeBy: none
+		sourceColumn: target_date_key
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_target = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\TUKU MAPA\Documents\Project\insurance_performance_powerBI\data\fact_target.csv"),[Delimiter=",", Columns=4, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"agent_id", Int64.Type}, {"year", Int64.Type}, {"month", Int64.Type}, {"ape_target_usd", type number}}),
+				    #"Added Custom" = Table.AddColumn(#"Changed Type", "target_date_key", each [year] * 10000 + [month] * 100 + 1),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Added Custom",{{"target_date_key", Int64.Type}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,216 @@
+table _Measures
+	lineageTag: d060de13-30de-4e60-9fdd-e1c980598a3f
+
+	measure 'Total APE' =
+			
+			SUM(fact_sales[ape_usd])
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: aae212ff-d61d-4605-a44e-6c36d176a588
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure 'Total APE Target' =
+			
+			SUM(fact_target[ape_target_usd])
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 94162526-6b67-48a1-8a89-6b11dd84d895
+
+	measure 'APE YTD' =
+			
+			CALCULATE(
+			    [Total APE],
+			    DATESYTD(dim_date[date])
+			)
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 187bd8f1-3527-4178-97d8-1278ed4e5968
+
+	measure 'APE MoM Growth %' =
+			
+			VAR CurrentAPE =
+			    [Total APE]
+			
+			VAR PreviousMonthAPE =
+			    CALCULATE(
+			        [Total APE],
+			        DATEADD(
+			            dim_date[date],
+			            -1,
+			            MONTH
+			        )
+			    )
+			
+			RETURN
+			    DIVIDE(
+			        CurrentAPE - PreviousMonthAPE,
+			        PreviousMonthAPE
+			    )
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: c06afd4b-be70-4ce2-bfdb-745f05f8b804
+
+	measure 'APE Rolling 3 Months' =
+			
+			VAR EndDate =
+			    EOMONTH(
+			        MAX(dim_date[date]),
+			        0
+			    )
+			
+			VAR StartDate =
+			    EOMONTH(
+			        EndDate,
+			        -3
+			    ) + 1
+			
+			RETURN
+			    CALCULATE(
+			        [Total APE],
+			        DATESBETWEEN(
+			            dim_date[date],
+			            StartDate,
+			            EndDate
+			        )
+			    )
+		lineageTag: 791a20ae-15e5-4154-9799-20c2814290c8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'APE vs Target %' =
+			
+			DIVIDE(
+			    [Total APE],
+			    [Total APE Target]
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 4b25fcdb-2f87-43d5-8b26-d37872263679
+
+	measure 'APE Target Variance %' =
+			
+			DIVIDE(
+			    [Total APE] - [Total APE Target],
+			    [Total APE Target]
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 3a061740-3fa4-43bb-99b2-57a74f700c94
+
+	measure 'Renewed Policy Count' =
+			
+			CALCULATE(
+			    COUNTROWS(fact_persistency),
+			    fact_persistency[renewal_status] = "renewed"
+			)
+		formatString: 0
+		lineageTag: 8f880c34-c672-41c2-9840-4c2f5169bcbe
+
+	measure 'Due Policy Count' =
+			
+			CALCULATE(
+			    COUNTROWS(fact_persistency),
+			    fact_persistency[renewal_status]
+			        IN {
+			            "renewed",
+			            "lapsed",
+			            "grace"
+			        }
+			)
+		formatString: 0
+		lineageTag: c0aa4fc4-6d56-40a1-9c5c-a2cc768624bc
+
+	measure 'Persistency Rate' =
+			
+			DIVIDE(
+			    [Renewed Policy Count],
+			    [Due Policy Count]
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 2f5a8280-76e2-42e8-b7d5-c921ddf22817
+
+	measure 'Active Policy Count Snapshot' =
+			
+			VAR SnapshotDate =
+			    MAX(dim_date[date])
+			
+			VAR SnapshotDateKey =
+			    YEAR(SnapshotDate) * 10000
+			        + MONTH(SnapshotDate) * 100
+			        + DAY(SnapshotDate)
+			
+			RETURN
+			    CALCULATE(
+			        COUNTROWS(fact_persistency),
+			
+			        REMOVEFILTERS(dim_date),
+			
+			        FILTER(
+			            fact_persistency,
+			
+			            fact_persistency[issue_date_key]
+			                <= SnapshotDateKey
+			
+			                &&
+			
+			            (
+			                fact_persistency[renewal_due_date_key]
+			                    > SnapshotDateKey
+			
+			                ||
+			
+			                (
+			                    fact_persistency[renewal_due_date_key]
+			                        <= SnapshotDateKey
+			
+			                    &&
+			
+			                    fact_persistency[renewal_status]
+			                        IN {
+			                            "renewed",
+			                            "grace",
+			                            "active"
+			                        }
+			                )
+			            )
+			        )
+			    )
+		formatString: 0
+		lineageTag: ca587391-84c1-4343-84b1-60bdf4cd8dc7
+
+	measure 'Active Agent Count' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT(dim_agent[agent_id]),
+			    dim_agent[active_flag] = 1
+			)
+		formatString: 0
+		lineageTag: 450d6a8b-e580-4991-b252-d03345264044
+
+	measure 'Agent Rank by APE' =
+			
+			RANKX(
+			    ALLSELECTED(dim_agent[agent_id]),
+			    [Total APE],
+			    ,
+			    DESC,
+			    DENSE
+			)
+		formatString: 0
+		lineageTag: f6286e2a-f929-42ed-a52c-4d991a7f07ec
+
+	column Placeholder
+		isHidden
+		formatString: 0
+		lineageTag: 51288bb4-1cf5-4e28-a321-b332755be263
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Placeholder]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Measures = calculated
+		mode: import
+		source =
+				
+				ROW(
+				    "Placeholder", BLANK()
+				)
+
+	annotation PBI_Id = 2475cbbd1b584cd48680461542065089
+

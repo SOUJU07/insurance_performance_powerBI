@@ -1,0 +1,80 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "4a5ce665c573d0ccc308",
+  "position": {
+    "x": 1022.4584369681895,
+    "y": 566.42387747087321,
+    "z": 7,
+    "height": 407.17371383688965,
+    "width": 484.98913470349521,
+    "tabOrder": 5
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dim_date"
+                    }
+                  },
+                  "Property": "year"
+                }
+              },
+              "queryRef": "Sum(dim_date.year)",
+              "nativeQueryRef": "year"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Renewed Policy Count"
+                }
+              },
+              "queryRef": "_Measures.Renewed Policy Count",
+              "nativeQueryRef": "Renewed Policy Count"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Due Policy Count"
+                }
+              },
+              "queryRef": "_Measures.Due Policy Count",
+              "nativeQueryRef": "Due Policy Count"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Persistency Rate"
+                }
+              },
+              "queryRef": "_Measures.Persistency Rate",
+              "nativeQueryRef": "Persistency Rate"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

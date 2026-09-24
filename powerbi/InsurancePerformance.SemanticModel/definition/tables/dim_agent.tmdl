@@ -1,0 +1,114 @@
+table dim_agent
+	lineageTag: a682acde-3ee3-4c5c-a2bc-1189888be119
+
+	column agent_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: ee728a47-9e87-481c-953d-68d6e1d29a4c
+		summarizeBy: none
+		sourceColumn: agent_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column agent_code
+		dataType: string
+		lineageTag: 4b883904-9154-4932-9a6e-a41213bee178
+		summarizeBy: none
+		sourceColumn: agent_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column agent_name
+		dataType: string
+		lineageTag: e469f42f-0911-4e83-95e1-87c52ef4e384
+		summarizeBy: none
+		sourceColumn: agent_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column region
+		dataType: string
+		lineageTag: a888de65-fe63-46aa-8788-efa92bd0db7d
+		summarizeBy: none
+		sourceColumn: region
+
+		annotation SummarizationSetBy = Automatic
+
+	column territory
+		dataType: string
+		lineageTag: ef969545-8ef5-4fba-9d9c-de98600a35ca
+		summarizeBy: none
+		sourceColumn: territory
+
+		annotation SummarizationSetBy = Automatic
+
+	column office
+		dataType: string
+		lineageTag: e4c764c1-47d4-4f41-b9a2-662dcc6df17d
+		summarizeBy: none
+		sourceColumn: office
+
+		annotation SummarizationSetBy = Automatic
+
+	column join_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: db801b96-f10d-459f-922c-4072e9f17b84
+		summarizeBy: none
+		sourceColumn: join_date
+
+		variation Variation
+			isDefault
+			relationship: 0ff52480-6a16-4d68-a618-c8d1cd2bdab0
+			defaultHierarchy: LocalDateTable_93763e8e-3bb2-4f28-b765-ed3e84cff98b.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column channel
+		dataType: string
+		lineageTag: 3a6c468a-c3c9-468c-8400-56bee0cf70b1
+		summarizeBy: none
+		sourceColumn: channel
+
+		annotation SummarizationSetBy = Automatic
+
+	column active_flag
+		dataType: int64
+		formatString: 0
+		lineageTag: 0714beb3-ce83-4dc9-bf46-48a621b2b95f
+		summarizeBy: sum
+		sourceColumn: active_flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Agent Display' =
+			
+			dim_agent[agent_name]
+			    & " ("
+			    & dim_agent[agent_code]
+			    & ")"
+		lineageTag: d0ff6d49-6efb-4b26-881b-a0c3edafaf59
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_agent = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\TUKU MAPA\Documents\Project\insurance_performance_powerBI\data\dim_agent.csv"),[Delimiter=",", Columns=9, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"agent_id", Int64.Type}, {"agent_code", type text}, {"agent_name", type text}, {"region", type text}, {"territory", type text}, {"office", type text}, {"join_date", type date}, {"channel", type text}, {"active_flag", Int64.Type}}),
+				    #"Appended Query" = Table.Combine({#"Changed Type", inferred_agents})
+				in
+				    #"Appended Query"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

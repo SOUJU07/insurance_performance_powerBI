@@ -1,0 +1,61 @@
+table dim_product
+	lineageTag: f3d15d2e-8784-4f82-adab-7f573ac54e87
+
+	column product_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: fc217296-d55e-4ad2-8a2e-687201954fe5
+		summarizeBy: none
+		sourceColumn: product_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_code
+		dataType: string
+		lineageTag: 7d405ea2-6448-487d-ab07-d1d96d3b7f97
+		summarizeBy: none
+		sourceColumn: product_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_name
+		dataType: string
+		lineageTag: 06556bd1-ad17-4587-8c1f-b7f8bb3be509
+		summarizeBy: none
+		sourceColumn: product_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_category
+		dataType: string
+		lineageTag: 98beee41-0920-48d8-9b06-010857fe5f01
+		summarizeBy: none
+		sourceColumn: product_category
+
+		annotation SummarizationSetBy = Automatic
+
+	column premium_type
+		dataType: string
+		lineageTag: 74d91683-558b-47c5-8d13-b98d66360d7b
+		summarizeBy: none
+		sourceColumn: premium_type
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_product = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\TUKU MAPA\Documents\Project\insurance_performance_powerBI\data\dim_product.csv"),[Delimiter=",", Columns=5, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"product_id", Int64.Type}, {"product_code", type text}, {"product_name", type text}, {"product_category", type text}, {"premium_type", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,102 @@
+table fact_sales
+	lineageTag: eb84cf37-9543-46e0-a007-c9997272a690
+
+	column sale_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: ce3643df-b5a5-400e-8380-f4b1229bfb25
+		summarizeBy: sum
+		sourceColumn: sale_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_key
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: fd9f2952-2d16-4437-ac75-008dbe36b983
+		summarizeBy: none
+		sourceColumn: date_key
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column agent_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 4486fb07-fadd-44a2-b542-04f7a48579f3
+		summarizeBy: none
+		sourceColumn: agent_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 9ac66e7c-ca93-4e9a-9264-65fcd75d0f37
+		summarizeBy: none
+		sourceColumn: product_id
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ape_usd
+		dataType: double
+		lineageTag: 484479af-fe2e-4dbe-80b3-3780ff1b6038
+		summarizeBy: sum
+		sourceColumn: ape_usd
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column fyp_usd
+		dataType: double
+		lineageTag: bda984c3-3886-49bf-84d0-e150bcd00168
+		summarizeBy: sum
+		sourceColumn: fyp_usd
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column policies_issued
+		dataType: int64
+		formatString: 0
+		lineageTag: 0f2e9444-9480-46a8-8bd2-53d3f95a9924
+		summarizeBy: sum
+		sourceColumn: policies_issued
+
+		annotation SummarizationSetBy = Automatic
+
+	column sale_channel
+		dataType: string
+		lineageTag: 9e6d9167-84e5-4c23-b3d4-829f467df50c
+		summarizeBy: none
+		sourceColumn: sale_channel
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_sales = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\TUKU MAPA\Documents\Project\insurance_performance_powerBI\data\fact_sales.csv"),[Delimiter=",", Columns=8, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"sale_id", Int64.Type}, {"date_key", Int64.Type}, {"agent_id", Int64.Type}, {"product_id", Int64.Type}, {"ape_usd", type number}, {"fyp_usd", type number}, {"policies_issued", Int64.Type}, {"sale_channel", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
